@@ -34,7 +34,7 @@ class GoogleTagManageQuoteConnectorDependencyProvider extends AbstractBundleDepe
      */
     protected function addCartClient(Container $container): Container
     {
-        $container->set(static::CART_CLIENT, function (Container $container) {
+        $container->set(static::CART_CLIENT, static function (Container $container) {
             return new GoogleTagManageQuoteConnectorToCartClientBridge(
                 $container->getLocator()->cart()->client()
             );
