@@ -10,7 +10,6 @@ use Spryker\Yves\Kernel\AbstractPlugin;
  */
 class GoogleTagManagerQuoteTransactionTaxPlugin extends AbstractPlugin implements GoogleTagManagerVariableBuilderPluginInterface
 {
-
     /**
      * @param string $page
      * @param array $params

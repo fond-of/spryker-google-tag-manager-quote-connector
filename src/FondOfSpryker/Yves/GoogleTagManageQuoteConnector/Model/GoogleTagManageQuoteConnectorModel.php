@@ -64,12 +64,12 @@ class GoogleTagManageQuoteConnectorModel implements GoogleTagManageQuoteConnecto
     {
         $quoteTransfer = $this->createQuoteTransferFormArray($params);
 
-        $shipmentTotal = (int) $quoteTransfer->getTotals()->getShipmentTotal();
-        $grandTotal = (int) $quoteTransfer->getTotals()->getGrandTotal();
+        $shipmentTotal = (int)$quoteTransfer->getTotals()->getShipmentTotal();
+        $grandTotal = (int)$quoteTransfer->getTotals()->getGrandTotal();
         $totalWithoutShippingAmount = $this->moneyPlugin->convertIntegerToDecimal($grandTotal - $shipmentTotal);
 
         return [
-            GoogleTagManageQuoteConnectorConstants::FIELD_TRANSACTION_WITHOUT_SHIPPING_AMOUNT => $totalWithoutShippingAmount
+            GoogleTagManageQuoteConnectorConstants::FIELD_TRANSACTION_WITHOUT_SHIPPING_AMOUNT => $totalWithoutShippingAmount,
         ];
     }
 
@@ -85,7 +85,7 @@ class GoogleTagManageQuoteConnectorModel implements GoogleTagManageQuoteConnecto
         $tax = $quoteTransfer->getTotals()->getTaxTotal()->getAmount();
 
         return [
-            GoogleTagManageQuoteConnectorConstants::FIELD_TRANSACTION_TAX => $this->moneyPlugin->convertIntegerToDecimal($tax)
+            GoogleTagManageQuoteConnectorConstants::FIELD_TRANSACTION_TAX => $this->moneyPlugin->convertIntegerToDecimal($tax),
         ];
     }
 
@@ -105,7 +105,7 @@ class GoogleTagManageQuoteConnectorModel implements GoogleTagManageQuoteConnecto
         }
 
         return [
-            GoogleTagManageQuoteConnectorConstants::FIELD_TRANSACTION_PRODUCTS_SKUS => $skuCollection
+            GoogleTagManageQuoteConnectorConstants::FIELD_TRANSACTION_PRODUCTS_SKUS => $skuCollection,
         ];
     }
 
@@ -120,7 +120,7 @@ class GoogleTagManageQuoteConnectorModel implements GoogleTagManageQuoteConnecto
         $quoteTransfer = $this->createQuoteTransferFormArray($params);
 
         return [
-            GoogleTagManageQuoteConnectorConstants::FIELD_CUSTOMER_EMAIL => $quoteTransfer->getBillingAddress()->getEmail()
+            GoogleTagManageQuoteConnectorConstants::FIELD_CUSTOMER_EMAIL => $quoteTransfer->getBillingAddress()->getEmail(),
         ];
     }
 
