@@ -1,8 +1,8 @@
 <?php
 
-namespace FondOfSpryker\Yves\GoogleTagManageQuoteConnector\Model;
+namespace FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Model;
 
-interface GoogleTagManageQuoteConnectorModelInterface
+interface GoogleTagManagerQuoteConnectorModelInterface
 {
     /**
      * @param string $page
@@ -59,4 +59,12 @@ interface GoogleTagManageQuoteConnectorModelInterface
      * @return array
      */
     public function getTransactionEntity(string $page, array $params): array;
+
+    /**
+     * @param string $page
+     * @param array $params
+     *
+     * @return array
+     */
+    public function getEmailHash(string $page, array $params): array;
 }

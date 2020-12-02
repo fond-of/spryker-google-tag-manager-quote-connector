@@ -1,11 +1,11 @@
 <?php
 
-namespace FondOfSpryker\Yves\GoogleTagManageQuoteConnector\Dependency;
+namespace FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency;
 
 use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Client\Cart\CartClientInterface;
 
-class GoogleTagManageQuoteConnectorToCartClientBridge implements GoogleTagManageQuoteConnectorToCartClientInterface
+class GoogleTagManagerQuoteConnectorToCartClientBridge implements GoogleTagManagerQuoteConnectorToCartClientInterface
 {
     /**
      * @var \Spryker\Client\Cart\CartClientInterface
