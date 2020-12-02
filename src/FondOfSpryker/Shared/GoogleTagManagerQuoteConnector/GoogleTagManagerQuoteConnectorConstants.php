@@ -1,8 +1,8 @@
 <?php
 
-namespace FondOfSpryker\Shared\GoogleTagManageQuoteConnector;
+namespace FondOfSpryker\Shared\GoogleTagManagerQuoteConnector;
 
-interface GoogleTagManageQuoteConnectorConstants
+interface GoogleTagManagerQuoteConnectorConstants
 {
     public const FIELD_TRANSACTION_AFFILIATION = 'transactionAffiliation';
     public const FIELD_TRANSACTION_TOTAL = 'transactionTotal';
@@ -11,4 +11,8 @@ interface GoogleTagManageQuoteConnectorConstants
     public const FIELD_TRANSACTION_PRODUCTS_SKUS = 'transactionProductsSkus';
     public const FIELD_TRANSACTION_ENTITY = 'transactionEntity';
     public const FIELD_CUSTOMER_EMAIL = 'customerEmail';
+    public const FIELD_EXTERNAL_ID_HASH = 'externalIdHash';
+    public const FIELD_TRANSACTION_PRODUCTS = 'transactionProducts';
+
+    public const PARAMETER_QUOTE = 'PARAMETER_QUOTE';
 }

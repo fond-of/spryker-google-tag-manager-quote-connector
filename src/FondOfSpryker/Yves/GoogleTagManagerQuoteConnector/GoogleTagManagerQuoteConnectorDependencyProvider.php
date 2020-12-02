@@ -1,16 +1,15 @@
 <?php
 
-namespace FondOfSpryker\Yves\GoogleTagManageQuoteConnector;
+namespace FondOfSpryker\Yves\GoogleTagManagerQuoteConnector;
 
-use FondOfSpryker\Yves\GoogleTagManageQuoteConnector\Dependency\GoogleTagManageQuoteConnectorToCartClientBridge;
+use FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency\GoogleTagManagerQuoteConnectorToCartClientBridge;
 use Spryker\Yves\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Yves\Kernel\Container;
 use Spryker\Yves\Money\Plugin\MoneyPlugin;
 
-class GoogleTagManageQuoteConnectorDependencyProvider extends AbstractBundleDependencyProvider
+class GoogleTagManagerQuoteConnectorDependencyProvider extends AbstractBundleDependencyProvider
 {
     public const CART_CLIENT = 'CART_CLIENT';
-    public const GOOGLE_TAG_MANAGER_QUOTE_PLUGINS = 'GOOGLE_TAG_MANAGER_QUOTE_PLUGINS';
     public const MONEY_PLUGIN = 'MONEY_PLUGIN';
 
     /**
@@ -21,7 +20,6 @@ class GoogleTagManageQuoteConnectorDependencyProvider extends AbstractBundleDepe
     public function provideDependencies(Container $container): Container
     {
         $container = $this->addCartClient($container);
-        $container = $this->addGoogleTagManagerQuotePlugins($container);
         $container = $this->addMoneyPlugin($container);
 
         return $container;
@@ -35,34 +33,12 @@ class GoogleTagManageQuoteConnectorDependencyProvider extends AbstractBundleDepe
     protected function addCartClient(Container $container): Container
     {
         $container->set(static::CART_CLIENT, static function (Container $container) {
-            return new GoogleTagManageQuoteConnectorToCartClientBridge(
+            return new GoogleTagManagerQuoteConnectorToCartClientBridge(
                 $container->getLocator()->cart()->client()
             );
         });
 
         return $container;
-    }
-
-    /**
-     * @param \Spryker\Yves\Kernel\Container $container
-     *
-     * @return \Spryker\Yves\Kernel\Container
-     */
-    protected function addGoogleTagManagerQuotePlugins(Container $container): Container
-    {
-        $container->set(static::GOOGLE_TAG_MANAGER_QUOTE_PLUGINS, function () {
-            return $this->getGoogleTagManagerQuotePlugins();
-        });
-
-        return $container;
-    }
-
-    /**
-     * @return \FondOfSpryker\Yves\GoogleTagManagerExtension\Dependency\GoogleTagManagerVariableBuilderPluginInterface[]
-     */
-    protected function getGoogleTagManagerQuotePlugins(): array
-    {
-        return [];
     }
 
     /**

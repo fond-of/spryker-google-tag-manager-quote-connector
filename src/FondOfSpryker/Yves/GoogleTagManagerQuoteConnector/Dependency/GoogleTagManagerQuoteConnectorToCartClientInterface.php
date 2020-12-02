@@ -1,10 +1,10 @@
 <?php
 
-namespace FondOfSpryker\Yves\GoogleTagManageQuoteConnector\Dependency;
+namespace FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency;
 
 use Generated\Shared\Transfer\QuoteTransfer;
 
-interface GoogleTagManageQuoteConnectorToCartClientInterface
+interface GoogleTagManagerQuoteConnectorToCartClientInterface
 {
     /**
      * @return \Generated\Shared\Transfer\QuoteTransfer

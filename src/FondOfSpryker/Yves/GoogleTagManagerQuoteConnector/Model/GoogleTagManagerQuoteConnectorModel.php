@@ -1,12 +1,13 @@
 <?php
 
-namespace FondOfSpryker\Yves\GoogleTagManageQuoteConnector\Model;
+namespace FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Model;
 
-use FondOfSpryker\Shared\GoogleTagManageQuoteConnector\GoogleTagManageQuoteConnectorConstants;
+use FondOfSpryker\Shared\GoogleTagManagerQuoteConnector\GoogleTagManagerQuoteConnectorConstants;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\TotalsTransfer;
 use Spryker\Shared\Money\Dependency\Plugin\MoneyPluginInterface;
 
-class GoogleTagManageQuoteConnectorModel implements GoogleTagManageQuoteConnectorModelInterface
+class GoogleTagManagerQuoteConnectorModel implements GoogleTagManagerQuoteConnectorModelInterface
 {
     /**
      * @var \Spryker\Shared\Money\Dependency\Plugin\MoneyPluginInterface
@@ -14,7 +15,7 @@ class GoogleTagManageQuoteConnectorModel implements GoogleTagManageQuoteConnecto
     protected $moneyPlugin;
 
     /**
-     * @param \FondOfSpryker\Yves\GoogleTagManageQuoteConnector\Dependency\GoogleTagManageQuoteConnectorToCartClientInterface $cartClient
+     * @param \FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency\GoogleTagManagerQuoteConnectorToCartClientInterface $cartClient
      */
     public function __construct(MoneyPluginInterface $moneyPlugin)
     {
@@ -32,7 +33,7 @@ class GoogleTagManageQuoteConnectorModel implements GoogleTagManageQuoteConnecto
         $quoteTransfer = $this->createQuoteTransferFormArray($params);
 
         return [
-            GoogleTagManageQuoteConnectorConstants::FIELD_TRANSACTION_AFFILIATION => $quoteTransfer->getStore()->getName(),
+            GoogleTagManagerQuoteConnectorConstants::FIELD_TRANSACTION_AFFILIATION => $quoteTransfer->getStore()->getName(),
         ];
     }
 
@@ -45,7 +46,7 @@ class GoogleTagManageQuoteConnectorModel implements GoogleTagManageQuoteConnecto
     public function getTransactionTotal(string $page, array $params): array
     {
         return [
-            GoogleTagManageQuoteConnectorConstants::FIELD_TRANSACTION_TOTAL => $this->moneyPlugin
+            GoogleTagManagerQuoteConnectorConstants::FIELD_TRANSACTION_TOTAL => $this->moneyPlugin
                 ->convertIntegerToDecimal(
                     $this->createQuoteTransferFormArray($params)
                         ->getTotals()
@@ -64,12 +65,16 @@ class GoogleTagManageQuoteConnectorModel implements GoogleTagManageQuoteConnecto
     {
         $quoteTransfer = $this->createQuoteTransferFormArray($params);
 
-        $shipmentTotal = (int)$quoteTransfer->getTotals()->getShipmentTotal();
-        $grandTotal = (int)$quoteTransfer->getTotals()->getGrandTotal();
+        $shipmentTotal = $quoteTransfer->getTotals() instanceof TotalsTransfer
+            ? (int)$quoteTransfer->getTotals()->getShipmentTotal() : 0;
+
+        $grandTotal = $quoteTransfer->getTotals() instanceof TotalsTransfer
+            ? (int)$quoteTransfer->getTotals()->getGrandTotal() : 0;
+
         $totalWithoutShippingAmount = $this->moneyPlugin->convertIntegerToDecimal($grandTotal - $shipmentTotal);
 
         return [
-            GoogleTagManageQuoteConnectorConstants::FIELD_TRANSACTION_WITHOUT_SHIPPING_AMOUNT => $totalWithoutShippingAmount,
+            GoogleTagManagerQuoteConnectorConstants::FIELD_TRANSACTION_WITHOUT_SHIPPING_AMOUNT => $totalWithoutShippingAmount,
         ];
     }
 
@@ -85,7 +90,7 @@ class GoogleTagManageQuoteConnectorModel implements GoogleTagManageQuoteConnecto
         $tax = $quoteTransfer->getTotals()->getTaxTotal()->getAmount();
 
         return [
-            GoogleTagManageQuoteConnectorConstants::FIELD_TRANSACTION_TAX => $this->moneyPlugin->convertIntegerToDecimal($tax),
+            GoogleTagManagerQuoteConnectorConstants::FIELD_TRANSACTION_TAX => $this->moneyPlugin->convertIntegerToDecimal($tax),
         ];
     }
 
@@ -105,7 +110,7 @@ class GoogleTagManageQuoteConnectorModel implements GoogleTagManageQuoteConnecto
         }
 
         return [
-            GoogleTagManageQuoteConnectorConstants::FIELD_TRANSACTION_PRODUCTS_SKUS => $skuCollection,
+            GoogleTagManagerQuoteConnectorConstants::FIELD_TRANSACTION_PRODUCTS_SKUS => $skuCollection,
         ];
     }
 
@@ -119,8 +124,16 @@ class GoogleTagManageQuoteConnectorModel implements GoogleTagManageQuoteConnecto
     {
         $quoteTransfer = $this->createQuoteTransferFormArray($params);
 
+        if ($quoteTransfer->getBillingAddress() === null) {
+            return [];
+        }
+
+        if ($quoteTransfer->getBillingAddress()->getEmail() === null) {
+            return [];
+        }
+
         return [
-            GoogleTagManageQuoteConnectorConstants::FIELD_CUSTOMER_EMAIL => $quoteTransfer->getBillingAddress()->getEmail(),
+            GoogleTagManagerQuoteConnectorConstants::FIELD_CUSTOMER_EMAIL => $quoteTransfer->getBillingAddress()->getEmail(),
         ];
     }
 
@@ -133,7 +146,30 @@ class GoogleTagManageQuoteConnectorModel implements GoogleTagManageQuoteConnecto
     public function getTransactionEntity(string $page, array $params): array
     {
         return [
-            GoogleTagManageQuoteConnectorConstants::FIELD_TRANSACTION_ENTITY => 'QUOTE',
+            GoogleTagManagerQuoteConnectorConstants::FIELD_TRANSACTION_ENTITY => 'QUOTE',
+        ];
+    }
+
+    /**
+     * @param string $page
+     * @param array $params
+     *
+     * @return array
+     */
+    public function getEmailHash(string $page, array $params): array
+    {
+        $quoteTransfer = $this->createQuoteTransferFormArray($params);
+
+        if ($quoteTransfer->getBillingAddress() === null) {
+            return [];
+        }
+
+        if ($quoteTransfer->getBillingAddress()->getEmail() === null) {
+            return [];
+        }
+
+        return [
+            GoogleTagManagerQuoteConnectorConstants::FIELD_EXTERNAL_ID_HASH => sha1($quoteTransfer->getBillingAddress()->getEmail()),
         ];
     }
 
