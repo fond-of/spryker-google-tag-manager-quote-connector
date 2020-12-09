@@ -3,7 +3,9 @@
 namespace FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Expander;
 
 use Codeception\Test\Unit;
+use FondOfSpryker\Shared\GoogleTagManagerQuoteConnector\GoogleTagManagerQuoteConnectorConstants as ModuleConstants;
 use FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency\GoogleTagManagerQuoteConnectorToCartClientInterface;
+use FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency\GoogleTagManagerQuoteConnectorToLocaleClientInterface;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\StoreTransfer;
@@ -15,6 +17,11 @@ class DataLayerExpanderTest extends Unit
      * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency\GoogleTagManagerQuoteConnectorToCartClientInterface
      */
     protected $cartClientMock;
+
+    /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency\GoogleTagManagerQuoteConnectorToLocaleClientInterface
+     */
+    protected $localeClientMock;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\Spryker\Shared\Money\Dependency\Plugin\MoneyPluginInterface
@@ -50,11 +57,11 @@ class DataLayerExpanderTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->moneyPluginMock = $this->getMockBuilder(MoneyPluginInterface::class)
+        $this->localeClientMock = $this->getMockBuilder(GoogleTagManagerQuoteConnectorToLocaleClientInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->quoteTransferMock = $this->getMockBuilder(QuoteTransfer::class)
+        $this->moneyPluginMock = $this->getMockBuilder(MoneyPluginInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -62,30 +69,20 @@ class DataLayerExpanderTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->itemTransferMock = $this->getMockBuilder(ItemTransfer::class)
+        $this->quoteTransferMock = $this->getMockBuilder(QuoteTransfer::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $quoteTransfer = (new QuoteTransfer())
-            ->fromArray(include codecept_data_dir('quote_transfer_array.php'), true);
+        $this->itemTransferMock = $this->getMockBuilder(ItemTransfer::class)
+            ->setMethods(['getAbstractAttributes', 'getSku'])
+            ->disableOriginalConstructor()
+            ->getMock();
 
-        $this->cartClientMock->expects($this->once())
-            ->method('getQuote')
-            ->willReturn($quoteTransfer);
-
-        /*$this->quoteTransferMock->expects($this->atLeastOnce())
-            ->method('getStore')
-            ->willReturn($this->storeTransferMock);
-
-        $this->quoteTransferMock->expects($this->atLeastOnce())
-            ->method('getStore')
-            ->willReturn($this->storeTransferMock);
-
-        $this->quoteTransferMock->expects($this->atLeastOnce())
-            ->method('getItems')
-            ->willReturn([$this->itemTransferMock]);*/
-
-        $this->expander = new DataLayerExpander($this->moneyPluginMock, $this->cartClientMock);
+        $this->expander = new DataLayerExpander(
+            $this->moneyPluginMock,
+            $this->cartClientMock,
+            $this->localeClientMock
+        );
     }
 
     /**
@@ -93,12 +90,30 @@ class DataLayerExpanderTest extends Unit
      */
     public function testExpand(): void
     {
-        $result = $this->expander->expand('pageType', [], []);
+        $quoteTransfer = (new QuoteTransfer())
+            ->fromArray(include codecept_data_dir('quote_transfer_array.php'), true);
 
+        $this->moneyPluginMock->expects($this->atLeastOnce())
+            ->method('convertIntegerToDecimal')
+            ->willReturn(39.90);
 
+        $this->localeClientMock->expects($this->atLeastOnce())
+            ->method('getCurrentLocale')
+            ->willReturn('de_DE');
 
-
+        $result = $this->expander->expand('pageType', [
+            ModuleConstants::PARAMETER_QUOTE => $quoteTransfer
+        ], []);
 
         $this->assertIsArray($result);
+        $this->assertArrayHasKey(ModuleConstants::FIELD_TRANSACTION_ENTITY, $result);
+        $this->assertArrayHasKey(ModuleConstants::FIELD_CUSTOMER_EMAIL, $result);
+        $this->assertArrayHasKey(ModuleConstants::FIELD_EXTERNAL_ID_HASH, $result);
+        $this->assertArrayHasKey(ModuleConstants::FIELD_TRANSACTION_AFFILIATION, $result);
+        $this->assertArrayHasKey(ModuleConstants::FIELD_TRANSACTION_PRODUCTS_SKUS, $result);
+        $this->assertArrayHasKey(ModuleConstants::FIELD_TRANSACTION_TAX, $result);
+        $this->assertArrayHasKey(ModuleConstants::FIELD_TRANSACTION_TOTAL, $result);
+        $this->assertArrayHasKey(ModuleConstants::FIELD_TRANSACTION_WITHOUT_SHIPPING_AMOUNT, $result);
+        $this->assertArrayHasKey(ModuleConstants::FIELD_TRANSACTION_PRODUCTS, $result);
     }
 }

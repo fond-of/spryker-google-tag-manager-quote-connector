@@ -4,9 +4,8 @@ namespace FondOfSpryker\Yves\GoogleTagManagerQuoteConnector;
 
 use Codeception\Test\Unit;
 use FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency\GoogleTagManagerQuoteConnectorToCartClientInterface;
+use FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency\GoogleTagManagerQuoteConnectorToLocaleClientInterface;
 use FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Expander\DataLayerExpanderInterface;
-use FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Model\GoogleTagManagerQuoteConnectorModelInterface;
-use FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Provider\GoogleTagManagerQuoteProviderInterface;
 use Spryker\Shared\Money\Dependency\Plugin\MoneyPluginInterface;
 use Spryker\Yves\Kernel\Container;
 
@@ -21,6 +20,11 @@ class GoogleTagManagerQuoteConnectorFactoryTest extends Unit
      * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency\GoogleTagManagerQuoteConnectorToCartClientInterface
      */
     protected $cartClientMock;
+
+    /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency\GoogleTagManagerQuoteConnectorToLocaleClientInterface
+     */
+    protected $localeClientMock;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\Spryker\Shared\Money\Dependency\Plugin\MoneyPluginInterface
@@ -49,6 +53,10 @@ class GoogleTagManagerQuoteConnectorFactoryTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->localeClientMock = $this->getMockBuilder(GoogleTagManagerQuoteConnectorToLocaleClientInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->factory = new GoogleTagManagerQuoteConnectorFactory();
         $this->factory->setContainer($this->containerMock);
     }
@@ -64,7 +72,7 @@ class GoogleTagManagerQuoteConnectorFactoryTest extends Unit
 
         $this->containerMock->expects($this->atLeastOnce())
             ->method('get')
-            ->willReturn($this->moneyPluginMock, $this->cartClientMock);
+            ->willReturn($this->moneyPluginMock, $this->cartClientMock, $this->localeClientMock);
 
         $this->assertInstanceOf(
             DataLayerExpanderInterface::class,
@@ -83,11 +91,11 @@ class GoogleTagManagerQuoteConnectorFactoryTest extends Unit
 
         $this->containerMock->expects($this->atLeastOnce())
             ->method('get')
-            ->willReturn($this->cartClientMock);
+            ->willReturn($this->localeClientMock);
 
         $this->assertInstanceOf(
-            GoogleTagManagerQuoteConnectorToCartClientInterface::class,
-            $this->factory->getCartClient()
+            GoogleTagManagerQuoteConnectorToLocaleClientInterface::class,
+            $this->factory->getLocaleClient()
         );
     }
 
@@ -95,6 +103,25 @@ class GoogleTagManagerQuoteConnectorFactoryTest extends Unit
      * @return void
      */
     public function testGetMoneyPlugin(): void
+    {
+        $this->containerMock->expects($this->atLeastOnce())
+            ->method('has')
+            ->willReturn(true);
+
+        $this->containerMock->expects($this->atLeastOnce())
+            ->method('get')
+            ->willReturn($this->moneyPluginMock);
+
+        $this->assertInstanceOf(
+            MoneyPluginInterface::class,
+            $this->factory->getMoneyPlugin()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetLocaleClient(): void
     {
         $this->containerMock->expects($this->atLeastOnce())
             ->method('has')

@@ -11,10 +11,30 @@
         <property name="store" type="Store"/>
         <property name="billingAddress" type="Address"/>
         <property name="totals" singular="total" type="Totals"/>
+        <property name="items" singular="item" type="Item[]"/>
     </transfer>
 
     <transfer name="Totals">
         <property name="shipmentTotal" type="int"/>
         <property name="grandTotal" type="int"/>
+    </transfer>
+
+    <transfer name="Store">
+        <property name="name" type="string"/>
+    </transfer>
+
+    <transfer name="Item">
+        <property name="id" type="int"/>
+        <property name="name" type="string"/>
+        <property name="url" type="string"/>
+        <property name="taxRate" type="float"/>
+        <property name="quantity" type="int"/>
+        <property name="sku" type="string"/>
+        <property name="abstractAttributes" type="array"/>
+        <property name="images" singular="image" type="Image[]"/>
+    </transfer>
+
+    <transfer name="Image">
+        <property name="externalUrlSmall" type="string"/>
     </transfer>
 </transfers>

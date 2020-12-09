@@ -5,7 +5,6 @@ namespace FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Expander;
 use FondOfSpryker\Shared\GoogleTagManagerQuoteConnector\GoogleTagManagerQuoteConnectorConstants as ModuleConstants;
 use FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency\GoogleTagManagerQuoteConnectorToCartClientInterface;
 use FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency\GoogleTagManagerQuoteConnectorToLocaleClientInterface;
-use FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency\GoogleTagManagerQuoteConnectorToStoreClientInterface;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\TotalsTransfer;
@@ -21,12 +20,12 @@ class DataLayerExpander implements DataLayerExpanderInterface
     protected $moneyPlugin;
 
     /**
-     * @var GoogleTagManagerQuoteConnectorToCartClientInterface
+     * @var \FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency\GoogleTagManagerQuoteConnectorToCartClientInterface
      */
     protected $cartClient;
 
     /**
-     * @var GoogleTagManagerQuoteConnectorToLocaleClientInterface
+     * @var \FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency\GoogleTagManagerQuoteConnectorToLocaleClientInterface
      */
     protected $localeClient;
 
@@ -37,8 +36,7 @@ class DataLayerExpander implements DataLayerExpanderInterface
         MoneyPluginInterface $moneyPlugin,
         GoogleTagManagerQuoteConnectorToCartClientInterface $cartClient,
         GoogleTagManagerQuoteConnectorToLocaleClientInterface $localeClient
-    )
-    {
+    ) {
         $this->moneyPlugin = $moneyPlugin;
         $this->cartClient = $cartClient;
         $this->localeClient = $localeClient;
@@ -71,9 +69,9 @@ class DataLayerExpander implements DataLayerExpanderInterface
     }
 
     /**
-     * @param QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return null|string
+     * @return string|null
      */
     protected function getCustomerEmail(QuoteTransfer $quoteTransfer): ?string
     {
@@ -89,7 +87,7 @@ class DataLayerExpander implements DataLayerExpanderInterface
     }
 
     /**
-     * @param QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
      * @return array
      */
@@ -105,7 +103,7 @@ class DataLayerExpander implements DataLayerExpanderInterface
     }
 
     /**
-     * @param QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
      * @return array
      */
@@ -136,9 +134,9 @@ class DataLayerExpander implements DataLayerExpanderInterface
     }
 
     /**
-     * @param QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return float
+     * @return float|null
      */
     protected function getTax(QuoteTransfer $quoteTransfer): ?float
     {
@@ -156,9 +154,9 @@ class DataLayerExpander implements DataLayerExpanderInterface
     }
 
     /**
-     * @param QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return float
+     * @return float|null
      */
     protected function getTotal(QuoteTransfer $quoteTransfer): ?float
     {
@@ -167,7 +165,7 @@ class DataLayerExpander implements DataLayerExpanderInterface
         }
 
         return $this->moneyPlugin->convertIntegerToDecimal(
-            (int) $quoteTransfer->getTotals()->getGrandTotal()
+            (int)$quoteTransfer->getTotals()->getGrandTotal()
         );
     }
 
@@ -214,7 +212,7 @@ class DataLayerExpander implements DataLayerExpanderInterface
     }
 
     /**
-     * @param ItemTransfer $itemTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
      *
      * @return float
      */
@@ -224,7 +222,7 @@ class DataLayerExpander implements DataLayerExpanderInterface
     }
 
     /**
-     * @param ItemTransfer $itemTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
      *
      * @return float
      */
@@ -234,7 +232,7 @@ class DataLayerExpander implements DataLayerExpanderInterface
     }
 
     /**
-     * @param ItemTransfer $itemTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
      *
      * @return float
      */
@@ -244,7 +242,7 @@ class DataLayerExpander implements DataLayerExpanderInterface
     }
 
     /**
-     * @param ItemTransfer $itemTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
      *
      * @return string
      */
@@ -260,7 +258,7 @@ class DataLayerExpander implements DataLayerExpanderInterface
     }
 
     /**
-     * @param ItemTransfer $itemTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
      *
      * @return string
      */
@@ -276,7 +274,7 @@ class DataLayerExpander implements DataLayerExpanderInterface
     }
 
     /**
-     * @param ItemTransfer $itemTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
      *
      * @return string
      */
@@ -292,7 +290,7 @@ class DataLayerExpander implements DataLayerExpanderInterface
     }
 
     /**
-     * @param ItemTransfer $itemTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
      *
      * @return string
      */
@@ -306,7 +304,7 @@ class DataLayerExpander implements DataLayerExpanderInterface
     }
 
     /**
-     * @param ItemTransfer $itemTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
      *
      * @return string
      */

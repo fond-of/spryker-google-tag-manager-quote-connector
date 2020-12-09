@@ -1,8 +1,6 @@
 <?php
 
-
 namespace FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency;
-
 
 interface GoogleTagManagerQuoteConnectorToLocaleClientInterface
 {
