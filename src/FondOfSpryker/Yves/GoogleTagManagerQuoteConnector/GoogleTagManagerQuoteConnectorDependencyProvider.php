@@ -4,7 +4,6 @@ namespace FondOfSpryker\Yves\GoogleTagManagerQuoteConnector;
 
 use FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency\GoogleTagManagerQuoteConnectorToCartClientBridge;
 use FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency\GoogleTagManagerQuoteConnectorToLocaleClientBridge;
-use FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency\GoogleTagManagerQuoteConnectorToStoreClientBridge;
 use Spryker\Yves\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Yves\Kernel\Container;
 use Spryker\Yves\Money\Plugin\MoneyPlugin;
@@ -12,7 +11,6 @@ use Spryker\Yves\Money\Plugin\MoneyPlugin;
 class GoogleTagManagerQuoteConnectorDependencyProvider extends AbstractBundleDependencyProvider
 {
     public const CART_CLIENT = 'CART_CLIENT';
-    public const STORE_CLIENT = 'STORE_CLIENT';
     public const LOCALE_CLIENT = 'LOCALE_CLIENT';
     public const MONEY_PLUGIN = 'MONEY_PLUGIN';
 
@@ -25,24 +23,7 @@ class GoogleTagManagerQuoteConnectorDependencyProvider extends AbstractBundleDep
     {
         $container = $this->addCartClient($container);
         $container = $this->addMoneyPlugin($container);
-        $container = $this->addStoreClient($container);
         $container = $this->addLocaleClient($container);
-
-        return $container;
-    }
-
-    /**
-     * @param Container $container
-     *
-     * @return Container
-     */
-    protected function addStoreClient(Container $container): Container
-    {
-        $container->set(static::STORE_CLIENT, static function(Container $container) {
-            return new GoogleTagManagerQuoteConnectorToStoreClientBridge(
-                $container->getLocator()->store()->client()
-            );
-        });
 
         return $container;
     }
@@ -78,9 +59,9 @@ class GoogleTagManagerQuoteConnectorDependencyProvider extends AbstractBundleDep
     }
 
     /**
-     * @param Container $container
-     * @return Container
-     * @throws \Spryker\Service\Container\Exception\FrozenServiceException
+     * @param \Spryker\Yves\Kernel\Container $container
+     *
+     * @return \Spryker\Yves\Kernel\Container
      */
     protected function addLocaleClient(Container $container): Container
     {

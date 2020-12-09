@@ -1,15 +1,13 @@
 <?php
 
-
 namespace FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency;
-
 
 use Spryker\Client\Locale\LocaleClientInterface;
 
 class GoogleTagManagerQuoteConnectorToLocaleClientBridge implements GoogleTagManagerQuoteConnectorToLocaleClientInterface
 {
     /**
-     * @var LocaleClientInterface
+     * @var \Spryker\Client\Locale\LocaleClientInterface
      */
     protected $localeClient;
 
