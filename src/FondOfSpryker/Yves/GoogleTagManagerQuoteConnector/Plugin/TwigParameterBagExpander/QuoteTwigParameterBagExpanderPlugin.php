@@ -4,7 +4,6 @@ namespace FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Plugin\TwigParameter
 
 use FondOfSpryker\Shared\GoogleTagManagerQuoteConnector\GoogleTagManagerQuoteConnectorConstants;
 use FondOfSpryker\Yves\GoogleTagManagerExtension\Dependency\TwigParameterBagExpanderPluginInterface;
-use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Yves\Kernel\AbstractPlugin;
 
 /**
@@ -13,11 +12,12 @@ use Spryker\Yves\Kernel\AbstractPlugin;
 class QuoteTwigParameterBagExpanderPlugin extends AbstractPlugin implements TwigParameterBagExpanderPluginInterface
 {
     /**
+     * @param string $pageType
      * @param array $twigVariableBag
      *
      * @return bool
      */
-    public function isApplicable(array $twigVariableBag = []): bool
+    public function isApplicable(string $pageType, array $twigVariableBag = []): bool
     {
         return $this->getFactory()->getCartClient()->getQuote()->getItems()->count() > 0;
     }

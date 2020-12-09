@@ -3,6 +3,8 @@
 namespace FondOfSpryker\Yves\GoogleTagManagerQuoteConnector;
 
 use FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency\GoogleTagManagerQuoteConnectorToCartClientInterface;
+use FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency\GoogleTagManagerQuoteConnectorToLocaleClientInterface;
+use FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency\GoogleTagManagerQuoteConnectorToStoreClientInterface;
 use FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Expander\DataLayerExpander;
 use FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Expander\DataLayerExpanderInterface;
 use FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Model\GoogleTagManagerQuoteConnectorModel;
@@ -19,7 +21,11 @@ class GoogleTagManagerQuoteConnectorFactory extends AbstractFactory
      */
     public function createDataLayerExpander(): DataLayerExpanderInterface
     {
-        return new DataLayerExpander($this->getMoneyPlugin(), $this->getCartClient());
+        return new DataLayerExpander(
+            $this->getMoneyPlugin(),
+            $this->getCartClient(),
+            $this->getLocaleClient()
+        );
     }
 
     /**
@@ -36,5 +42,20 @@ class GoogleTagManagerQuoteConnectorFactory extends AbstractFactory
     public function getMoneyPlugin(): MoneyPluginInterface
     {
         return $this->getProvidedDependency(GoogleTagManagerQuoteConnectorDependencyProvider::MONEY_PLUGIN);
+    }
+
+    public function getStoreClient(): GoogleTagManagerQuoteConnectorToStoreClientInterface
+    {
+        return $this->getProvidedDependency(GoogleTagManagerQuoteConnectorDependencyProvider::STORE_CLIENT);
+    }
+
+    /**
+     * @return GoogleTagManagerQuoteConnectorToLocaleClientInterface
+     *
+     * @throws \Spryker\Yves\Kernel\Exception\Container\ContainerKeyNotFoundException
+     */
+    public function getLocaleClient(): GoogleTagManagerQuoteConnectorToLocaleClientInterface
+    {
+        return $this->getProvidedDependency(GoogleTagManagerQuoteConnectorDependencyProvider::LOCALE_CLIENT);
     }
 }
