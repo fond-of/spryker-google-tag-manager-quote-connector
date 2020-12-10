@@ -31,7 +31,7 @@
         <property name="quantity" type="int"/>
         <property name="sku" type="string"/>
         <property name="abstractAttributes" type="array"/>
-        <property name="images" singular="image" type="Image[]"/>
+        <property name="images" type="ProductImage[]" singular="image"/>
     </transfer>
 
     <transfer name="Image">
