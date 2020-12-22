@@ -26,7 +26,10 @@ class QuoteDataLayerExpanderPluginTest extends Unit
      */
     protected $plugin;
 
-    protected function _before()
+    /**
+     * @return void
+     */
+    protected function _before(): void
     {
         $this->factoryMock = $this->getMockBuilder(GoogleTagManagerQuoteConnectorFactory::class)
             ->disableOriginalConstructor()
