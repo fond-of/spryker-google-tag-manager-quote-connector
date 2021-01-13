@@ -3,10 +3,9 @@
 namespace FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Plugin\DataLayer;
 
 use Codeception\Test\Unit;
-use FondOfSpryker\Yves\GoogleTagManagerExtension\Dependency\GoogleTagManagerDataLayerExpanderPluginInterface;
+use FondOfSpryker\Shared\GoogleTagManagerQuoteConnector\GoogleTagManagerQuoteConnectorConstants;
 use FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Expander\DataLayerExpanderInterface;
 use FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\GoogleTagManagerQuoteConnectorFactory;
-use FondOfSpryker\Shared\GoogleTagManagerQuoteConnector\GoogleTagManagerQuoteConnectorConstants;
 use Generated\Shared\Transfer\QuoteTransfer;
 
 class QuoteDataLayerExpanderPluginTest extends Unit
@@ -22,7 +21,7 @@ class QuoteDataLayerExpanderPluginTest extends Unit
     protected $expanderMock;
 
     /**
-     * @var GoogleTagManagerDataLayerExpanderPluginInterface
+     * @var \FondOfSpryker\Yves\GoogleTagManagerExtension\Dependency\GoogleTagManagerDataLayerExpanderPluginInterface
      */
     protected $plugin;
 
@@ -49,7 +48,7 @@ class QuoteDataLayerExpanderPluginTest extends Unit
     public function testIsApplicable(): void
     {
         $this->assertEquals(true, $this->plugin->isApplicable('pageType', [
-            GoogleTagManagerQuoteConnectorConstants::PARAMETER_QUOTE => new QuoteTransfer()
+            GoogleTagManagerQuoteConnectorConstants::PARAMETER_QUOTE => new QuoteTransfer(),
         ]));
     }
 
