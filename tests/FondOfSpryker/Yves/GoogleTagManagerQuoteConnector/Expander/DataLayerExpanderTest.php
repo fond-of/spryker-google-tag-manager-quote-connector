@@ -102,7 +102,7 @@ class DataLayerExpanderTest extends Unit
             ->willReturn('de_DE');
 
         $result = $this->expander->expand('pageType', [
-            ModuleConstants::PARAMETER_QUOTE => $quoteTransfer
+            ModuleConstants::PARAMETER_QUOTE => $quoteTransfer,
         ], []);
 
         $this->assertIsArray($result);

@@ -5,7 +5,6 @@ namespace FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Plugin\TwigParameter
 use ArrayObject;
 use Codeception\Test\Unit;
 use FondOfSpryker\Shared\GoogleTagManagerQuoteConnector\GoogleTagManagerQuoteConnectorConstants;
-use FondOfSpryker\Yves\GoogleTagManagerExtension\Dependency\TwigParameterBagExpanderPluginInterface;
 use FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency\GoogleTagManagerQuoteConnectorToCartClientInterface;
 use FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\GoogleTagManagerQuoteConnectorFactory;
 use Generated\Shared\Transfer\ItemTransfer;
@@ -19,22 +18,22 @@ class QuoteTwigParameterBagExpanderPluginTest extends Unit
     protected $factoryMock;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|GoogleTagManagerQuoteConnectorToCartClientInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency\GoogleTagManagerQuoteConnectorToCartClientInterface
      */
     protected $cartClientMock;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|QuoteTransfer
+     * @var \PHPUnit\Framework\MockObject\MockObject|\Generated\Shared\Transfer\QuoteTransfer
      */
     protected $quoteTransferMock;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|ItemTransfer
+     * @var \PHPUnit\Framework\MockObject\MockObject|\Generated\Shared\Transfer\ItemTransfer
      */
     protected $itemTransferMock;
 
     /**
-     * @var TwigParameterBagExpanderPluginInterface
+     * @var \FondOfSpryker\Yves\GoogleTagManagerExtension\Dependency\TwigParameterBagExpanderPluginInterface
      */
     protected $plugin;
 
