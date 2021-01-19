@@ -9,6 +9,9 @@ use FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Expander\DataLayerExpander
 use Spryker\Shared\Money\Dependency\Plugin\MoneyPluginInterface;
 use Spryker\Yves\Kernel\AbstractFactory;
 
+/**
+ * @method GoogleTagManagerQuoteConnectorConfig getConfig()
+ */
 class GoogleTagManagerQuoteConnectorFactory extends AbstractFactory
 {
     /**
@@ -19,7 +22,8 @@ class GoogleTagManagerQuoteConnectorFactory extends AbstractFactory
         return new DataLayerExpander(
             $this->getMoneyPlugin(),
             $this->getCartClient(),
-            $this->getLocaleClient()
+            $this->getLocaleClient(),
+            $this->getConfig()
         );
     }
 

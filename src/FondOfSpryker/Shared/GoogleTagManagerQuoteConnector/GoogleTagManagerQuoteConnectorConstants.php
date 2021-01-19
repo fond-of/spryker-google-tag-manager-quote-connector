@@ -34,4 +34,6 @@ interface GoogleTagManagerQuoteConnectorConstants
     public const PARAMETER_PRODUCT_ATTR_EAN = 'ean';
     public const PARAMETER_PRODUCT_ATTR_BRAND = 'brand';
     public const PARAMETER_PRODUCT_ATTR_URL = 'url_key';
+
+    public const GTM_PROTOCOL = 'GTM_PROTOCOL';
 }

@@ -5,6 +5,7 @@ namespace FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Expander;
 use FondOfSpryker\Shared\GoogleTagManagerQuoteConnector\GoogleTagManagerQuoteConnectorConstants as ModuleConstants;
 use FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency\GoogleTagManagerQuoteConnectorToCartClientInterface;
 use FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency\GoogleTagManagerQuoteConnectorToLocaleClientInterface;
+use FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\GoogleTagManagerQuoteConnectorConfig;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\TotalsTransfer;
@@ -30,16 +31,26 @@ class DataLayerExpander implements DataLayerExpanderInterface
     protected $localeClient;
 
     /**
+     * @var GoogleTagManagerQuoteConnectorConfig
+     */
+    protected $config;
+
+    /**
+     * @param MoneyPluginInterface $moneyPlugin
      * @param \FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency\GoogleTagManagerQuoteConnectorToCartClientInterface $cartClient
+     * @param GoogleTagManagerQuoteConnectorToLocaleClientInterface $localeClient
+     * @param GoogleTagManagerQuoteConnectorConfig $config
      */
     public function __construct(
         MoneyPluginInterface $moneyPlugin,
         GoogleTagManagerQuoteConnectorToCartClientInterface $cartClient,
-        GoogleTagManagerQuoteConnectorToLocaleClientInterface $localeClient
+        GoogleTagManagerQuoteConnectorToLocaleClientInterface $localeClient,
+        GoogleTagManagerQuoteConnectorConfig $config
     ) {
         $this->moneyPlugin = $moneyPlugin;
         $this->cartClient = $cartClient;
         $this->localeClient = $localeClient;
+        $this->config = $config;
     }
 
     /**
@@ -314,9 +325,21 @@ class DataLayerExpander implements DataLayerExpanderInterface
         $productAttributes = $itemTransfer->getAbstractAttributes();
 
         if (isset($productAttributes[$currentLocale][ModuleConstants::PARAMETER_PRODUCT_ATTR_URL])) {
-            return $productAttributes[$currentLocale][ModuleConstants::PARAMETER_PRODUCT_ATTR_URL];
+            return $this->getHost().'/'.$productAttributes[$currentLocale][ModuleConstants::PARAMETER_PRODUCT_ATTR_URL];
         }
 
-        return $itemTransfer->getUrl();
+        return $this->getHost().'/'.$itemTransfer->getUrl();
+    }
+
+    /**
+     * @return string
+     */
+    protected function getHost(): string
+    {
+        $hostName = $this->config->getProtocol().'://'.$_SERVER['HTTP_HOST'];
+        $locale = explode('_', $this->localeClient->getCurrentLocale());
+        $localeUrlKey = $locale[0];
+
+        return \sprintf('%s/%s', $hostName, $localeUrlKey);
     }
 }
