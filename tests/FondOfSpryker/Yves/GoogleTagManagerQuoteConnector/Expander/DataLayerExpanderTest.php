@@ -6,6 +6,7 @@ use Codeception\Test\Unit;
 use FondOfSpryker\Shared\GoogleTagManagerQuoteConnector\GoogleTagManagerQuoteConnectorConstants as ModuleConstants;
 use FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency\GoogleTagManagerQuoteConnectorToCartClientInterface;
 use FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Dependency\GoogleTagManagerQuoteConnectorToLocaleClientInterface;
+use FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\GoogleTagManagerQuoteConnectorConfig;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\StoreTransfer;
@@ -44,6 +45,11 @@ class DataLayerExpanderTest extends Unit
     protected $itemTransferMock;
 
     /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|GoogleTagManagerQuoteConnectorConfig
+     */
+    protected $configMock;
+
+    /**
      * @var \FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\Expander\DataLayerExpanderInterface
      */
     protected $expander;
@@ -78,10 +84,15 @@ class DataLayerExpanderTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->configMock = $this->getMockBuilder(GoogleTagManagerQuoteConnectorConfig::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->expander = new DataLayerExpander(
             $this->moneyPluginMock,
             $this->cartClientMock,
-            $this->localeClientMock
+            $this->localeClientMock,
+            $this->configMock
         );
     }
 
@@ -115,5 +126,19 @@ class DataLayerExpanderTest extends Unit
         $this->assertArrayHasKey(ModuleConstants::FIELD_TRANSACTION_TOTAL, $result);
         $this->assertArrayHasKey(ModuleConstants::FIELD_TRANSACTION_WITHOUT_SHIPPING_AMOUNT, $result);
         $this->assertArrayHasKey(ModuleConstants::FIELD_TRANSACTION_PRODUCTS, $result);
+    }
+
+    /**
+     * @param $class_name
+     * @param $method
+     * @return \ReflectionProperty
+     */
+    public function getProtectedProperty($class_name, $method)
+    {
+        $Reflection = new \ReflectionClass($class_name);
+        $Property = $Reflection->getMethod($method);
+        $Property->setAccessible(true);
+
+        return $Property;
     }
 }

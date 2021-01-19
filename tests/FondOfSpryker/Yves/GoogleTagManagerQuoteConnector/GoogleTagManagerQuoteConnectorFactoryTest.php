@@ -32,6 +32,11 @@ class GoogleTagManagerQuoteConnectorFactoryTest extends Unit
     protected $moneyPluginMock;
 
     /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|GoogleTagManagerQuoteConnectorConfig
+     */
+    protected $configMock;
+
+    /**
      * @var \FondOfSpryker\Yves\GoogleTagManagerQuoteConnector\GoogleTagManagerQuoteConnectorFactory
      */
     protected $factory;
@@ -57,8 +62,13 @@ class GoogleTagManagerQuoteConnectorFactoryTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->configMock = $this->getMockBuilder(GoogleTagManagerQuoteConnectorConfig::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->factory = new GoogleTagManagerQuoteConnectorFactory();
         $this->factory->setContainer($this->containerMock);
+        $this->factory->setConfig($this->configMock);
     }
 
     /**
@@ -72,7 +82,7 @@ class GoogleTagManagerQuoteConnectorFactoryTest extends Unit
 
         $this->containerMock->expects($this->atLeastOnce())
             ->method('get')
-            ->willReturn($this->moneyPluginMock, $this->cartClientMock, $this->localeClientMock);
+            ->willReturn($this->moneyPluginMock, $this->cartClientMock, $this->localeClientMock, $this->configMock);
 
         $this->assertInstanceOf(
             DataLayerExpanderInterface::class,

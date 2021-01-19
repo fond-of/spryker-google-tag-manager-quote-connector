@@ -23,6 +23,9 @@
         <property name="name" type="string"/>
     </transfer>
 
+    <transfer name="ProductImageT">
+    </transfer>
+
     <transfer name="Item">
         <property name="id" type="int"/>
         <property name="name" type="string"/>
