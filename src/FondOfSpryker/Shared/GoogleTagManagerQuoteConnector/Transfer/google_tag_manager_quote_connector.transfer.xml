@@ -27,14 +27,11 @@
         <property name="id" type="int"/>
         <property name="name" type="string"/>
         <property name="url" type="string"/>
+        <property name="taxRate" type="float"/>
         <property name="quantity" type="int"/>
         <property name="sku" type="string"/>
         <property name="abstractAttributes" type="array"/>
         <property name="images" type="ProductImage[]" singular="image"/>
-    </transfer>
-
-    <transfer name="ProductImage">
-        <property name="externalUrlSmall" type="string"/>
     </transfer>
 
     <transfer name="Image">
