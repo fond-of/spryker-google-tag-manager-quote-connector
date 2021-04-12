@@ -9,7 +9,6 @@ interface GoogleTagManagerQuoteConnectorConstants
     public const FIELD_TRANSACTION_AFFILIATION = 'transactionAffiliation';
     public const FIELD_TRANSACTION_TOTAL = 'transactionTotal';
     public const FIELD_TRANSACTION_WITHOUT_SHIPPING_AMOUNT = 'transactionTotalWithoutShippingAmount';
-    public const FIELD_TRANSACTION_TAX = 'transactionTax';
     public const FIELD_TRANSACTION_PRODUCTS_SKUS = 'transactionProductsSkus';
     public const FIELD_TRANSACTION_ENTITY = 'transactionEntity';
     public const FIELD_CUSTOMER_EMAIL = 'customerEmail';
@@ -19,9 +18,6 @@ interface GoogleTagManagerQuoteConnectorConstants
     public const FIELD_PRODUCT_ID = 'id';
     public const FIELD_PRODUCT_SKU = 'sku';
     public const FIELD_PRODUCT_PRICE = 'price';
-    public const FIELD_PRODUCT_PRICE_EXCLUDING_TAX = 'priceExcludingTax';
-    public const FIELD_PRODUCT_TAX_RATE = 'taxRate';
-    public const FIELD_PRODUCT_TAX_AMOUNT = 'tax';
     public const FIELD_PRODUCT_QUANTITY = 'quantity';
     public const FIELD_PRODUCT_NAME = 'name';
     public const FIELD_PRODUCT_EAN = 'ean';
