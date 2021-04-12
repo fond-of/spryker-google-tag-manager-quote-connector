@@ -19,9 +19,6 @@ interface GoogleTagManagerQuoteConnectorConstants
     public const FIELD_PRODUCT_ID = 'id';
     public const FIELD_PRODUCT_SKU = 'sku';
     public const FIELD_PRODUCT_PRICE = 'price';
-    public const FIELD_PRODUCT_PRICE_EXCLUDING_TAX = 'priceExcludingTax';
-    public const FIELD_PRODUCT_TAX_RATE = 'taxRate';
-    public const FIELD_PRODUCT_TAX_AMOUNT = 'tax';
     public const FIELD_PRODUCT_QUANTITY = 'quantity';
     public const FIELD_PRODUCT_NAME = 'name';
     public const FIELD_PRODUCT_EAN = 'ean';

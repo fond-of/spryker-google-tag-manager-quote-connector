@@ -111,7 +111,6 @@ class DataLayerExpanderTest extends Unit
         $this->assertArrayHasKey(ModuleConstants::FIELD_EXTERNAL_ID_HASH, $result);
         $this->assertArrayHasKey(ModuleConstants::FIELD_TRANSACTION_AFFILIATION, $result);
         $this->assertArrayHasKey(ModuleConstants::FIELD_TRANSACTION_PRODUCTS_SKUS, $result);
-        $this->assertArrayHasKey(ModuleConstants::FIELD_TRANSACTION_TAX, $result);
         $this->assertArrayHasKey(ModuleConstants::FIELD_TRANSACTION_TOTAL, $result);
         $this->assertArrayHasKey(ModuleConstants::FIELD_TRANSACTION_WITHOUT_SHIPPING_AMOUNT, $result);
         $this->assertArrayHasKey(ModuleConstants::FIELD_TRANSACTION_PRODUCTS, $result);
