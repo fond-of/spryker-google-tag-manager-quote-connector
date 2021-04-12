@@ -60,7 +60,6 @@ class DataLayerExpander implements DataLayerExpanderInterface
             : null;
         $dataLayer[ModuleConstants::FIELD_TRANSACTION_AFFILIATION] = $quoteTransfer->getStore()->getName();
         $dataLayer[ModuleConstants::FIELD_TRANSACTION_PRODUCTS_SKUS] = $this->getProductSkus($quoteTransfer);
-        $dataLayer[ModuleConstants::FIELD_TRANSACTION_TAX] = $this->getTax($quoteTransfer);
         $dataLayer[ModuleConstants::FIELD_TRANSACTION_TOTAL] = $this->getTotal($quoteTransfer);
         $dataLayer[ModuleConstants::FIELD_TRANSACTION_WITHOUT_SHIPPING_AMOUNT] = $this->getTotalWithoutShippingAmount($quoteTransfer);
         $dataLayer[ModuleConstants::FIELD_TRANSACTION_PRODUCTS] = $this->getProducts($quoteTransfer);
@@ -117,9 +116,6 @@ class DataLayerExpander implements DataLayerExpanderInterface
                 ModuleConstants::FIELD_PRODUCT_NAME => $this->getProductName($itemTransfer),
                 ModuleConstants::FIELD_PRODUCT_SKU => $itemTransfer->getSku(),
                 ModuleConstants::FIELD_PRODUCT_PRICE => $this->getProductPrice($itemTransfer),
-                ModuleConstants::FIELD_PRODUCT_PRICE_EXCLUDING_TAX => $this->getPriceExcludingTax($itemTransfer),
-                ModuleConstants::FIELD_PRODUCT_TAX_AMOUNT => $this->getProductTaxAmount($itemTransfer),
-                ModuleConstants::FIELD_PRODUCT_TAX_RATE => $itemTransfer->getTaxRate(),
                 ModuleConstants::FIELD_PRODUCT_QUANTITY => $itemTransfer->getQuantity(),
                 ModuleConstants::FIELD_PRODUCT_EAN => $this->getProductEan($itemTransfer),
                 ModuleConstants::FIELD_PRODUCT_BRAND => $this->getProductBrand($itemTransfer),
@@ -131,26 +127,6 @@ class DataLayerExpander implements DataLayerExpanderInterface
         }
 
         return $products;
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
-     * @return float|null
-     */
-    protected function getTax(QuoteTransfer $quoteTransfer): ?float
-    {
-        if ($quoteTransfer->getTotals() === null) {
-            return null;
-        }
-
-        if ($quoteTransfer->getTotals()->getTaxTotal() === null) {
-            return null;
-        }
-
-        return $this->moneyPlugin->convertIntegerToDecimal(
-            $quoteTransfer->getTotals()->getTaxTotal()->getAmount()
-        );
     }
 
     /**
@@ -219,26 +195,6 @@ class DataLayerExpander implements DataLayerExpanderInterface
     protected function getProductPrice(ItemTransfer $itemTransfer): float
     {
         return $this->moneyPlugin->convertIntegerToDecimal($itemTransfer->getUnitPrice());
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     *
-     * @return float
-     */
-    protected function getPriceExcludingTax(ItemTransfer $itemTransfer): float
-    {
-        return $this->moneyPlugin->convertIntegerToDecimal($itemTransfer->getUnitPrice() - $itemTransfer->getUnitTaxAmount());
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     *
-     * @return float
-     */
-    protected function getProductTaxAmount(ItemTransfer $itemTransfer): float
-    {
-        return $this->moneyPlugin->convertIntegerToDecimal($itemTransfer->getUnitTaxAmount());
     }
 
     /**
