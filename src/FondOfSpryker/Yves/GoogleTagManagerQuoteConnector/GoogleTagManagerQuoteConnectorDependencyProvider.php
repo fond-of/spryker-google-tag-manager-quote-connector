@@ -17,10 +17,11 @@ class GoogleTagManagerQuoteConnectorDependencyProvider extends AbstractBundleDep
     /**
      * @param \Spryker\Yves\Kernel\Container $container
      *
-     * @return Spryker\Yves\Kernel\Container
+     * @return \Spryker\Yves\Kernel\Container
      */
     public function provideDependencies(Container $container): Container
     {
+        $container = parent::provideDependencies($container);
         $container = $this->addCartClient($container);
         $container = $this->addMoneyPlugin($container);
         $container = $this->addLocaleClient($container);
