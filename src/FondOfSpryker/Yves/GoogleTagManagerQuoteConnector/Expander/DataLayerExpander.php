@@ -13,6 +13,7 @@ use Spryker\Shared\Money\Dependency\Plugin\MoneyPluginInterface;
 class DataLayerExpander implements DataLayerExpanderInterface
 {
     public const UNTRANSLATED_KEY = '_';
+    public const EN_KEY = 'en_US';
 
     /**
      * @var \Spryker\Shared\Money\Dependency\Plugin\MoneyPluginInterface
@@ -206,8 +207,16 @@ class DataLayerExpander implements DataLayerExpanderInterface
     {
         $productAttributes = $itemTransfer->getAbstractAttributes();
 
-        if (isset($productAttributes[static::UNTRANSLATED_KEY][ModuleConstants::PARAMETER_PRODUCT_ATTR_NAME_UNTRANSLATED])) {
-            return $productAttributes[static::UNTRANSLATED_KEY][ModuleConstants::PARAMETER_PRODUCT_ATTR_NAME_UNTRANSLATED];
+        if (isset($productAttributes[static::UNTRANSLATED_KEY][ModuleConstants::PARAMETER_PRODUCT_ATTR_MODEL_UNTRANSLATED])
+            && !empty($productAttributes[static::UNTRANSLATED_KEY][ModuleConstants::PARAMETER_PRODUCT_ATTR_MODEL_UNTRANSLATED]))
+        {
+            return $productAttributes[static::UNTRANSLATED_KEY][ModuleConstants::PARAMETER_PRODUCT_ATTR_MODEL_UNTRANSLATED];
+        }
+
+        if (isset($productAttributes[static::UNTRANSLATED_KEY][ModuleConstants::PARAMETER_PRODUCT_ATTR_MODEL])
+            && !empty($productAttributes[static::UNTRANSLATED_KEY][ModuleConstants::PARAMETER_PRODUCT_ATTR_MODEL]))
+        {
+            return $productAttributes[static::UNTRANSLATED_KEY][ModuleConstants::PARAMETER_PRODUCT_ATTR_MODEL];
         }
 
         return $itemTransfer->getName();

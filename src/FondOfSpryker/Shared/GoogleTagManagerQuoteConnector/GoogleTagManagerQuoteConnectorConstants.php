@@ -28,6 +28,8 @@ interface GoogleTagManagerQuoteConnectorConstants
 
     public const PARAMETER_QUOTE = 'PARAMETER_QUOTE';
     public const PARAMETER_PRODUCT_ATTR_NAME_UNTRANSLATED = 'name_untranslated';
+    public const PARAMETER_PRODUCT_ATTR_MODEL_UNTRANSLATED = 'model_untranslated';
+    public const PARAMETER_PRODUCT_ATTR_MODEL = 'model';
     public const PARAMETER_PRODUCT_ATTR_EAN = 'ean';
     public const PARAMETER_PRODUCT_ATTR_BRAND = 'brand';
     public const PARAMETER_PRODUCT_ATTR_URL = 'url_key';
